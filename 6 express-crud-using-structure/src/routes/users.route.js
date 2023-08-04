@@ -2,6 +2,8 @@
 import { Router } from 'express'
 
 import UserController from '../controllers/users.controller.js'
+import ValidateMiddleware from '../middlewares/validation.middleware.js'
+import UserSchema from '../schemas/user.schema.js'
 
 const router = Router()
 
@@ -47,7 +49,11 @@ router.get('/', UserController.findMany)
  * @Access protected - [admin]
  * @returns {Array} - Created User Object.
  */
-router.post('/', UserController.create)
+router.post(
+  '/',
+  ValidateMiddleware.validateRequest(UserSchema.create),
+  UserController.create
+)
 
 // Exports
 export default router
